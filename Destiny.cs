@@ -13,9 +13,10 @@ namespace Destiny2
 
         private const string BaseUrl = "https://www.bungie.net";
 
-        public Destiny()
+        public Destiny(string apiKey)
         {
             _client = new HttpClient();
+            _client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
         }
 
         public void Dispose()
