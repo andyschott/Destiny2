@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Destiny2
+namespace Destiny2.Responses
 {
     public class Response<T>
     {

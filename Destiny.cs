@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Destiny2.Config;
+using Destiny2.Responses;
 using Destiny2.User;
 using Newtonsoft.Json;
 
@@ -43,21 +44,38 @@ namespace Destiny2
             return Get<UserMembershipData>($"User/GetMembershipsById/{membershipId}/{(int)type}");
         }
 
-        private Uri BuildUrl(string method, IEnumerable<Tuple<string, string>> queryItems = null)
+        public Task<DestinyProfileResponse> GetProfile(BungieMembershipType type, long id)
+        {
+            return GetProfile(type, id, DestinyComponentType.Profiles);
+        }
+
+        public Task<DestinyProfileResponse> GetProfile(BungieMembershipType type, long id, params DestinyComponentType[] components)
+        {
+            var query = ConvertComponents(components);
+            return Get<DestinyProfileResponse>($"Destiny2/{(int)type}/Profile/{id}", new[] { query });
+        }
+
+        public Task<DestinyCharacterResponse> GetCharacterInfo(BungieMembershipType type, long id, long characterId, params DestinyComponentType[] infos)
+        {
+            var query = ConvertComponents(infos);
+            return Get<DestinyCharacterResponse>($"Destiny2/{(int)type}/Profile/{id}/Character/{characterId}/", query);
+        }
+
+        private Uri BuildUrl(string method, IEnumerable<(string name, string value)> queryItems = null)
         {
             var builder = new UriBuilder($"{_webClient.BaseAddress}/Platform/{method}/");
 
             if (queryItems != null)
             {
                 var translated = from query in queryItems
-                                 select $"{query.Item1}={query.Item2}";
+                                 select $"{query.name}={query.value}";
                 builder.Query = string.Join("&", translated);
             }
 
             return builder.Uri;
         }
 
-        private async Task<T> Get<T>(string method, IEnumerable<Tuple<string, string>> queryItems = null)
+        private async Task<T> Get<T>(string method, params (string name, string value)[] queryItems)
         {
             if (_client == null)
             {
@@ -86,6 +104,13 @@ namespace Destiny2
                 Debug.WriteLine($"Error calling {method}: {ex.Message}");
                 return default(T);
             }
+        }
+
+        private static (string name, string value) ConvertComponents(IEnumerable<DestinyComponentType> components)
+        {
+            var rawValues = from component in components
+                            select (int)component;
+            return ("components",  string.Join(",", rawValues));
         }
     }
 }
