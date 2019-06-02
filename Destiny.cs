@@ -24,8 +24,16 @@ namespace Destiny2
         public Destiny(string apiKey, string accessToken)
         {
             _client = new HttpClient();
-            _client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
-            _client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+            
+            if(!string.IsNullOrEmpty(apiKey))
+            {
+                _client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+            }
+
+            if(!string.IsNullOrEmpty(accessToken))
+            {
+                _client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+            }
         }
 
         public void Dispose()
@@ -59,6 +67,20 @@ namespace Destiny2
         {
             var query = ConvertComponents(infos);
             return Get<DestinyCharacterResponse>($"Destiny2/{(int)type}/Profile/{id}/Character/{characterId}/", query);
+        }
+
+        public Task DownloadFile(string relativePath, string destination)
+        {
+            // try
+            // {
+                return _webClient.DownloadFileTaskAsync(relativePath, destination);
+            // }
+            // catch(Exception)
+            // {
+            //     // For some reason, add this try/catch fixes a crash even though
+            //     // this is never reached (?).
+            //     throw;
+            // }
         }
 
         private Uri BuildUrl(string method, IEnumerable<(string name, string value)> queryItems = null)
