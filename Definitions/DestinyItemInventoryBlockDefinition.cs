@@ -13,7 +13,8 @@ namespace Destiny2.Definitions
         [JsonProperty(PropertyName = "isInstanceItem")]
         public bool IsInstanceItem { get; set; }
         // tierTypeName
-        // tierType
+        [JsonProperty(PropertyName = "tierType")]
+        public TierType TierType { get; set; }
         // expirationTooltip
         // expiredInActivityMessage
         // expiredInOrbitMessage
