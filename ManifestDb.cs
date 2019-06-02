@@ -19,6 +19,11 @@ namespace Destiny2
             return LoadObject<ClassDef, DestinyClassDefinition>(hash);
         }
 
+        public Task<DestinyInventoryItemDefinition> LoadInventoryItem(uint hash)
+        {
+            return LoadObject<InventoryItemDef, DestinyInventoryItemDefinition>(hash);
+        }
+
         private async Task<TObject> LoadObject<TItemDefinition, TObject>(uint hash) where TItemDefinition : ItemDefinition, new()
         {
             var signedHash = ConvertHash(hash);
@@ -47,5 +52,7 @@ namespace Destiny2
 
         [Table("DESTINYCLASSDEFINITION")]
         class ClassDef : ItemDefinition { }
+        [Table("DESTINYINVENTORYITEMDEFINITION")]
+        class InventoryItemDef : ItemDefinition { }
     }
 }
