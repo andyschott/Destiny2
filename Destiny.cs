@@ -21,7 +21,7 @@ namespace Destiny2
             BaseAddress = "https://www.bungie.net"
         };
 
-        public Destiny(string apiKey, string accessToken)
+        public Destiny(string apiKey, string accessToken = "")
         {
             _client = new HttpClient();
             
@@ -71,16 +71,7 @@ namespace Destiny2
 
         public Task DownloadFile(string relativePath, string destination)
         {
-            // try
-            // {
-                return _webClient.DownloadFileTaskAsync(relativePath, destination);
-            // }
-            // catch(Exception)
-            // {
-            //     // For some reason, add this try/catch fixes a crash even though
-            //     // this is never reached (?).
-            //     throw;
-            // }
+            return _webClient.DownloadFileTaskAsync(relativePath, destination);
         }
 
         private Uri BuildUrl(string method, IEnumerable<(string name, string value)> queryItems = null)
