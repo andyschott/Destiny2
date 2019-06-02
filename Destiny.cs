@@ -69,6 +69,12 @@ namespace Destiny2
             return Get<DestinyCharacterResponse>($"Destiny2/{(int)type}/Profile/{id}/Character/{characterId}/", query);
         }
 
+        public Task<DestinyItemResponse> GetItem(BungieMembershipType type, long id, long itemInstanceId, params DestinyComponentType[] infos)
+        {
+            var query = ConvertComponents(infos);
+            return Get<DestinyItemResponse>($"Destiny2/{(int)type}/Profile/{id}/Item/{itemInstanceId}/", query);
+        }
+
         public Task DownloadFile(string relativePath, string destination)
         {
             return _webClient.DownloadFileTaskAsync(relativePath, destination);
