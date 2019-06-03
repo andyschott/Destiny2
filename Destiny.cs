@@ -9,17 +9,35 @@ using Destiny2.Config;
 using Destiny2.Responses;
 using Destiny2.User;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Destiny2
 {
     public class Destiny : IDisposable
     {
         private HttpClient _client;
+        private JsonSerializerSettings _settings = new JsonSerializerSettings();
 
         private readonly WebClient _webClient = new WebClient()
         {
             BaseAddress = "https://www.bungie.net"
         };
+
+        public bool DeserializationDebugging
+        {
+            get { return _settings.TraceWriter != null; }
+            set
+            {
+                if(value)
+                {
+                    _settings.TraceWriter = new MemoryTraceWriter();
+                }
+                else
+                {
+                    _settings.TraceWriter = null;
+                }
+            }
+        }
 
         public Destiny(string apiKey, string accessToken = "")
         {
@@ -108,7 +126,11 @@ namespace Destiny2
 
                 var json = await _client.GetStringAsync(url);
 
-                var response = JsonConvert.DeserializeObject<Response<T>>(json);
+                var response = JsonConvert.DeserializeObject<Response<T>>(json, _settings);
+                if(DeserializationDebugging)
+                {
+                    Console.WriteLine(_settings.TraceWriter);
+                }
 
                 if (response.ErrorCode != 1)
                 {
