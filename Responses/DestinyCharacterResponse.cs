@@ -11,5 +11,7 @@ namespace Destiny2.Responses
         public SingleComponentResponse<DestinyCharacterComponent> Character { get; set; } = null;
         [JsonProperty(PropertyName = "equipment")]
         public SingleComponentResponse<DestinyInventoryComponent> Equipment { get; set; } = null;
+        [JsonProperty(PropertyName = "itemComponents")]
+        public DestinyItemComponentSetOfInt64 ItemComponents { get; set; } = null;
     }
 }
