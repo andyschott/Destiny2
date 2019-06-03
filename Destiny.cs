@@ -94,7 +94,7 @@ namespace Destiny2
         {
             try
             {
-                using (var inputStream = await _client.GetStreamAsync($"{BaseAddress}{relativePath}"))
+                using (var inputStream = await _client.GetStreamAsync(CreateUrl(relativePath)))
                 {
                     using (var outputStream = File.Create(destination))
                     {
@@ -108,6 +108,11 @@ namespace Destiny2
                 Debug.WriteLine($"Error downloading {relativePath}: {ex.Message}");
                 return false;
             }
+        }
+
+        public static string CreateUrl(string relativeUrl)
+        {
+            return $"{BaseAddress}{relativeUrl}";
         }
 
         private Uri BuildUrl(string method, IEnumerable<(string name, string value)> queryItems = null)
