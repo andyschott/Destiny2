@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -16,12 +17,8 @@ namespace Destiny2
     public class Destiny : IDisposable
     {
         private HttpClient _client;
+        private const string BaseAddress = "https://www.bungie.net";
         private JsonSerializerSettings _settings = new JsonSerializerSettings();
-
-        private readonly WebClient _webClient = new WebClient()
-        {
-            BaseAddress = "https://www.bungie.net"
-        };
 
         public bool DeserializationDebugging
         {
@@ -93,14 +90,29 @@ namespace Destiny2
             return Get<DestinyItemResponse>($"Destiny2/{(int)type}/Profile/{id}/Item/{itemInstanceId}/", query);
         }
 
-        public Task DownloadFile(string relativePath, string destination)
+        public async Task<bool> DownloadFile(string relativePath, string destination)
         {
-            return _webClient.DownloadFileTaskAsync(relativePath, destination);
+            try
+            {
+                using (var inputStream = await _client.GetStreamAsync($"{BaseAddress}{relativePath}"))
+                {
+                    using (var outputStream = File.Create(destination))
+                    {
+                        await inputStream.CopyToAsync(outputStream);
+                        return true;
+                    }
+                }
+            }
+            catch(HttpRequestException ex)
+            {
+                Debug.WriteLine($"Error downloading {relativePath}: {ex.Message}");
+                return false;
+            }
         }
 
         private Uri BuildUrl(string method, IEnumerable<(string name, string value)> queryItems = null)
         {
-            var builder = new UriBuilder($"{_webClient.BaseAddress}/Platform/{method}/");
+            var builder = new UriBuilder($"{BaseAddress}/Platform/{method}/");
 
             if (queryItems != null)
             {
