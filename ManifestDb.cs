@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Destiny2.Definitions;
 using Newtonsoft.Json;
@@ -22,6 +24,11 @@ namespace Destiny2
         public Task<DestinyInventoryItemDefinition> LoadInventoryItem(uint hash)
         {
             return LoadObject<InventoryItemDef, DestinyInventoryItemDefinition>(hash);
+        }
+
+        public Task<DestinyInventoryBucketDefinition> LoadBucket(uint hash)
+        {
+            return LoadObject<BucketDef, DestinyInventoryBucketDefinition>(hash);
         }
 
         private async Task<TObject> LoadObject<TItemDefinition, TObject>(uint hash) where TItemDefinition : ItemDefinition, new()
@@ -54,5 +61,7 @@ namespace Destiny2
         class ClassDef : ItemDefinition { }
         [Table("DESTINYINVENTORYITEMDEFINITION")]
         class InventoryItemDef : ItemDefinition { }
+        [Table("DESTINYINVENTORYBUCKETDEFINITION")]
+        class BucketDef : ItemDefinition { }
     }
 }
