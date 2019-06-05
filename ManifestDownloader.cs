@@ -92,6 +92,11 @@ namespace Destiny2
                         return;
                     }
 
+                    if (File.Exists(destination))
+                    {
+                        File.Delete(destination);
+                    }
+
                     File.Move(extractedDatabase, destination);
                 }
                 catch (IOException)
