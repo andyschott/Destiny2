@@ -16,6 +16,12 @@ namespace Destiny2.Entities
         [JsonProperty(PropertyName = "classHash")]
         public uint ClassHash { get; set; }
 
+        [JsonProperty(PropertyName = "emblemPath")]
+        public string EmblemPath { get; set; }
+
+        [JsonProperty(PropertyName = "emblemBackgroundPath")]
+        public string EmblemBackgroundPath { get; set; }
+
         [JsonProperty(PropertyName = "baseCharacterLevel")]
         public int Level { get; set; }
         

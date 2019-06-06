@@ -17,7 +17,7 @@ namespace Destiny2
     public class Destiny : IDisposable
     {
         private HttpClient _client;
-        private const string BaseAddress = "https://www.bungie.net";
+        public const string BaseAddress = "https://www.bungie.net";
         private JsonSerializerSettings _settings = new JsonSerializerSettings();
 
         public bool DeserializationDebugging
