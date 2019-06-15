@@ -7,23 +7,19 @@ using Destiny2.Config;
 
 namespace Destiny2
 {
-    public class ManifestDownloader
+    class ManifestDownloader : IManifestDownloader
     {
-        private readonly string _localDatabasePath;
-        private string _currentVersion = null;
-        private readonly Destiny _destiny;
+        private readonly IDestiny _destiny;
 
-        public ManifestDownloader(string apiKey, string localDatabasePath, string currentVersion)
+        public ManifestDownloader(IDestiny destiny)
         {
-            _destiny = new Destiny(apiKey);
-            _localDatabasePath = localDatabasePath;
-            _currentVersion = currentVersion;
+            _destiny = destiny;
         }
 
-        public async Task<string> DownloadManifest()
+        public async Task<string> DownloadManifest(string localDatabasePath, string currentVersion)
         {
             var manifest = await _destiny.GetManifest();
-            if(IsManifestOutOfDate(manifest.Version))
+            if(IsManifestOutOfDate(currentVersion, manifest.Version, localDatabasePath))
             {
                 // TODO: should a different language be used based on the user's browser?
                 // Download the manifest database
@@ -34,14 +30,13 @@ namespace Destiny2
                 }
 
                 // Extract the downloaded database
-                await ExtractDatabase(compressedFile, _localDatabasePath);
+                await ExtractDatabase(compressedFile, localDatabasePath);
 
                 File.Delete(compressedFile);
 
                 // Update the version of the cached database
-                if (File.Exists(_localDatabasePath))
+                if (File.Exists(localDatabasePath))
                 {
-                    _currentVersion = manifest.Version;
                     return manifest.Version;
                 }
             }
@@ -49,19 +44,19 @@ namespace Destiny2
             return string.Empty;
         }
 
-        private bool IsManifestOutOfDate(string latestVersion)
+        private bool IsManifestOutOfDate(string currentVersion, string latestVersion, string localDatabasePath)
         {
-            if(string.IsNullOrEmpty(_currentVersion))
+            if(string.IsNullOrEmpty(currentVersion))
             {
                 return true;
             }
 
-            if(_currentVersion != latestVersion)
+            if(currentVersion != latestVersion)
             {
                 return true;
             }
 
-            if(!File.Exists(_localDatabasePath))
+            if(!File.Exists(localDatabasePath))
             {
                 return true;
             }

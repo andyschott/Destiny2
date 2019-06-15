@@ -14,11 +14,15 @@ using Newtonsoft.Json.Serialization;
 
 namespace Destiny2
 {
-    public class Destiny : IDisposable
+    class Destiny : IDestiny
     {
-        private HttpClient _client;
-        public const string BaseAddress = "https://www.bungie.net";
+        private readonly HttpClient _client;
         private JsonSerializerSettings _settings = new JsonSerializerSettings();
+
+        public Destiny(HttpClient client)
+        {
+            _client = client;
+        }
 
         public bool DeserializationDebugging
         {
@@ -36,65 +40,47 @@ namespace Destiny2
             }
         }
 
-        public Destiny(string apiKey, string accessToken = "")
-        {
-            _client = new HttpClient();
-            
-            if(!string.IsNullOrEmpty(apiKey))
-            {
-                _client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
-            }
-
-            if(!string.IsNullOrEmpty(accessToken))
-            {
-                _client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
-            }
-        }
-
-        public void Dispose()
-        {
-            _client?.Dispose();
-            _client = null;
-        }
-
         public Task<Manifest> GetManifest()
         {
-            return Get<Manifest>("Destiny2/Manifest");
+            return Get<Manifest>(string.Empty, "Destiny2/Manifest");
         }
 
-        public Task<UserMembershipData> GetMembershipData(long membershipId, BungieMembershipType type = BungieMembershipType.BungieNext)
+        public Task<UserMembershipData> GetMembershipData(string accessToken, long membershipId, BungieMembershipType type = BungieMembershipType.BungieNext)
         {
-            return Get<UserMembershipData>($"User/GetMembershipsById/{membershipId}/{(int)type}");
+            return Get<UserMembershipData>(accessToken, $"User/GetMembershipsById/{membershipId}/{(int)type}");
         }
 
-        public Task<DestinyProfileResponse> GetProfile(BungieMembershipType type, long id)
+        public Task<DestinyProfileResponse> GetProfile(string accessToken, BungieMembershipType type, long id)
         {
-            return GetProfile(type, id, DestinyComponentType.Profiles);
+            return GetProfile(accessToken, type, id, DestinyComponentType.Profiles);
         }
 
-        public Task<DestinyProfileResponse> GetProfile(BungieMembershipType type, long id, params DestinyComponentType[] components)
+        public Task<DestinyProfileResponse> GetProfile(string accessToken, BungieMembershipType type, long id,
+            params DestinyComponentType[] components)
         {
             var query = ConvertComponents(components);
-            return Get<DestinyProfileResponse>($"Destiny2/{(int)type}/Profile/{id}", new[] { query });
+            return Get<DestinyProfileResponse>(accessToken, $"Destiny2/{(int)type}/Profile/{id}", new[] { query });
         }
 
-        public Task<DestinyCharacterResponse> GetCharacterInfo(BungieMembershipType type, long id, long characterId, params DestinyComponentType[] infos)
+        public Task<DestinyCharacterResponse> GetCharacterInfo(string accessToken, BungieMembershipType type, long id,
+            long characterId, params DestinyComponentType[] infos)
         {
             var query = ConvertComponents(infos);
-            return Get<DestinyCharacterResponse>($"Destiny2/{(int)type}/Profile/{id}/Character/{characterId}/", query);
+            return Get<DestinyCharacterResponse>(accessToken, $"Destiny2/{(int)type}/Profile/{id}/Character/{characterId}/", query);
         }
 
-        public Task<DestinyItemResponse> GetItem(BungieMembershipType type, long id, long itemInstanceId, params DestinyComponentType[] infos)
+        public Task<DestinyItemResponse> GetItem(string accessToken, BungieMembershipType type, long id, long itemInstanceId,
+            params DestinyComponentType[] infos)
         {
             var query = ConvertComponents(infos);
-            return Get<DestinyItemResponse>($"Destiny2/{(int)type}/Profile/{id}/Item/{itemInstanceId}/", query);
+            return Get<DestinyItemResponse>(accessToken, $"Destiny2/{(int)type}/Profile/{id}/Item/{itemInstanceId}/", query);
         }
 
         public async Task<bool> DownloadFile(string relativePath, string destination)
         {
             try
             {
-                using (var inputStream = await _client.GetStreamAsync(CreateUrl(relativePath)))
+                using (var inputStream = await _client.GetStreamAsync(relativePath))
                 {
                     using (var outputStream = File.Create(destination))
                     {
@@ -110,14 +96,9 @@ namespace Destiny2
             }
         }
 
-        public static string CreateUrl(string relativeUrl)
-        {
-            return $"{BaseAddress}{relativeUrl}";
-        }
-
         private Uri BuildUrl(string method, IEnumerable<(string name, string value)> queryItems = null)
         {
-            var builder = new UriBuilder($"{BaseAddress}/Platform/{method}/");
+            var builder = new UriBuilder(_client.BaseAddress + $"Platform/{method}/");
 
             if (queryItems != null)
             {
@@ -129,13 +110,13 @@ namespace Destiny2
             return builder.Uri;
         }
 
-        private async Task<T> Get<T>(string method, params (string name, string value)[] queryItems)
+        private async Task<T> Get<T>(string accessToken, string method, params (string name, string value)[] queryItems)
         {
-            if (_client == null)
+            if(!string.IsNullOrEmpty(accessToken))
             {
-                return default(T);
+                _client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
             }
-
+        
             try
             {
                 var url = BuildUrl(method, queryItems);
