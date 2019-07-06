@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Destiny2.Config;
@@ -45,9 +44,9 @@ namespace Destiny2
             return Get<Manifest>(string.Empty, "Destiny2/Manifest");
         }
 
-        public Task<UserMembershipData> GetMembershipData(string accessToken, long membershipId, BungieMembershipType type = BungieMembershipType.BungieNext)
+        public Task<DestinyLinkedProfilesResponse> GetLinkedProfiles(string accessToken, long membershipId, BungieMembershipType type = BungieMembershipType.BungieNext)
         {
-            return Get<UserMembershipData>(accessToken, $"User/GetMembershipsById/{membershipId}/{(int)type}");
+            return Get<DestinyLinkedProfilesResponse>(accessToken, $"Destiny2/{(int)type}/Profile/{membershipId}/LinkedProfiles");
         }
 
         public Task<DestinyProfileResponse> GetProfile(string accessToken, BungieMembershipType type, long id)
@@ -114,6 +113,7 @@ namespace Destiny2
         {
             if(!string.IsNullOrEmpty(accessToken))
             {
+                _client.DefaultRequestHeaders.Remove("Authorization");
                 _client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
             }
         

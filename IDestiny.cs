@@ -8,8 +8,8 @@ namespace Destiny2
     public interface IDestiny
     {
          Task<Manifest> GetManifest();
-         Task<UserMembershipData> GetMembershipData(string accessToken, long membershipId,
-            BungieMembershipType type = BungieMembershipType.BungieNext);
+         Task<DestinyLinkedProfilesResponse> GetLinkedProfiles(string accessToken, long membershipId,
+             BungieMembershipType type = BungieMembershipType.BungieNext);
         Task<DestinyProfileResponse> GetProfile(string accessToken, BungieMembershipType type, long id);
         Task<DestinyProfileResponse> GetProfile(string accessToken, BungieMembershipType type, long id,
             params DestinyComponentType[] components);
