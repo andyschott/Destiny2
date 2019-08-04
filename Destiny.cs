@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Destiny2.Config;
 using Destiny2.Responses;
-using Destiny2.User;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -16,11 +16,13 @@ namespace Destiny2
     class Destiny : IDestiny
     {
         private readonly HttpClient _client;
+        private readonly ILogger _logger;
         private JsonSerializerSettings _settings = new JsonSerializerSettings();
 
-        public Destiny(HttpClient client)
+        public Destiny(HttpClient client, ILogger<Destiny> logger)
         {
             _client = client;
+            _logger = logger;
         }
 
         public bool DeserializationDebugging
@@ -90,7 +92,7 @@ namespace Destiny2
             }
             catch(HttpRequestException ex)
             {
-                Debug.WriteLine($"Error downloading {relativePath}: {ex.Message}");
+                _logger.LogError($"Error downloading {relativePath}: {ex.Message}");
                 return false;
             }
         }
@@ -120,7 +122,7 @@ namespace Destiny2
             try
             {
                 var url = BuildUrl(method, queryItems);
-                Debug.WriteLine($"Calling {url}");
+                _logger.LogInformation($"Calling {url}");
 
                 var json = await _client.GetStringAsync(url);
 
@@ -132,7 +134,7 @@ namespace Destiny2
 
                 if (response.ErrorCode != 1)
                 {
-                    Debug.WriteLine($"Error Code: {response.ErrorCode}; Error Status: {response.ErrorStatus}");
+                    _logger.LogWarning($"Error Code: {response.ErrorCode}; Error Status: {response.ErrorStatus}");
                     return default(T);
                 }
 
@@ -140,7 +142,7 @@ namespace Destiny2
             }
             catch (HttpRequestException ex)
             {
-                Debug.WriteLine($"Error calling {method}: {ex.Message}");
+                _logger.LogError($"Error calling {method}: {ex.Message}");
                 return default(T);
             }
         }
