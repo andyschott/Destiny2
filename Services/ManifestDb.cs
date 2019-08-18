@@ -1,19 +1,17 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Destiny2.Definitions;
 using Newtonsoft.Json;
 using SQLite;
 
-namespace Destiny2
+namespace Destiny2.Services
 {
-    public class ManifestDb
+    class ManifestDb : IManifest
     {
         private readonly SQLiteAsyncConnection _connection;
 
-        public ManifestDb(string databasePath)
+        public ManifestDb(IManifestSettings manifestSettings)
         {
-            _connection = new SQLiteAsyncConnection(databasePath);
+            _connection = new SQLiteAsyncConnection(manifestSettings.DbPath.FullName);
         }
 
         public Task<DestinyClassDefinition> LoadClass(uint hash)
