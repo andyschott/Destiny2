@@ -7,12 +7,16 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddDestiny2(this IServiceCollection services, string baseUrl, string apiKey,
-            int manifesetCheckTimeout = 5 * 60 * 1000)
+        public static void AddDestiny2(this IServiceCollection services, Destiny2Config config)
         {
-            AddDestiny2Service(services, baseUrl, apiKey);
+            if(!config.IsValid)
+            {
+                throw new ArgumentException("config is invalid", nameof(config));
+            }
+
+            AddDestiny2Service(services, config.BaseUrl, config.ApiKey);
             AddManifestDownloader(services);
-            AddManifestSettings(services, manifesetCheckTimeout);
+            AddManifestSettings(services, config.ManifestDatabasePath, config.ManifestCheckTimeout);
             AddManifestHostedService(services);
             AddManifest(services);
         }
@@ -40,12 +44,12 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<IManifestDownloader, ManifestDownloader>();
         }
 
-        private static void AddManifestSettings(IServiceCollection services, int manifestCheckTimeout)
+        private static void AddManifestSettings(IServiceCollection services, string manifestPath, int manifestCheckTimeout)
         {
             services.AddSingleton<IManifestSettings, ManifestSettings>(sp =>
             {
                 var logger = sp.GetService<ILogger<ManifestSettings>>();
-                return new ManifestSettings(logger)
+                return new ManifestSettings(logger, manifestPath)
                 {
                     ManifestCheckTimeout = manifestCheckTimeout,
                 };

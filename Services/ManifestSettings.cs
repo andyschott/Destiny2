@@ -17,16 +17,9 @@ namespace Destiny2.Services
             internal set { _manifestCheckTimeout = value; }
         }
 
-        public ManifestSettings(ILogger<ManifestSettings> logger)
+        public ManifestSettings(ILogger<ManifestSettings> logger, string dbPath = "")
         {
-            var scratchFolder = GetScratchFolder();
-            if(!Directory.Exists(scratchFolder))
-            {
-                logger.LogInformation($"Scratch folder ({scratchFolder}) doesn't exist, creating it.");
-                Directory.CreateDirectory(scratchFolder);
-            }
-
-            var dir = Path.Combine(scratchFolder, "MaxPowerLevel");
+            var dir = GetDbPath(logger, dbPath);
             if(!Directory.Exists(dir))
             {
                 logger.LogInformation($"Manifest DB directory ({dir}) doesn't exist, creating it.");
@@ -37,6 +30,23 @@ namespace Destiny2.Services
             DbPath = new FileInfo(Path.Combine(dir, "Manifest.db"));
 
             logger.LogInformation($"DbPath = {DbPath}.");
+        }
+
+        private static string GetDbPath(ILogger logger, string dbPath)
+        {
+            if(!string.IsNullOrEmpty(dbPath))
+            {
+                return dbPath;
+            }
+
+            var scratchFolder = GetScratchFolder();
+            if(!Directory.Exists(scratchFolder))
+            {
+                logger.LogInformation($"Scratch folder ({scratchFolder}) doesn't exist, creating it.");
+                Directory.CreateDirectory(scratchFolder);
+            }
+
+            return Path.Combine(scratchFolder, "Destiny2Manifest");
         }
 
         private static string GetScratchFolder()
