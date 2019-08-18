@@ -18,14 +18,14 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddTransient<ITraceWriter, JsonLogWriter>();
 
-            AddDestiny2Service(services, config.BaseUrl, config.ApiKey);
+            AddDestiny2Service(services, config.BaseUrl, config.ApiKey, config.UserAgent);
             AddManifestDownloader(services);
             AddManifestSettings(services, config.ManifestDatabasePath, config.ManifestCheckTimeout);
             AddManifestHostedService(services);
             AddManifest(services);
         }
 
-        private static void AddDestiny2Service(IServiceCollection services, string baseUrl, string apiKey)
+        private static void AddDestiny2Service(IServiceCollection services, string baseUrl, string apiKey, string userAgent)
         {
             if(string.IsNullOrEmpty(baseUrl))
             {
@@ -40,6 +40,7 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 client.BaseAddress = new Uri(baseUrl);
                 client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+                client.DefaultRequestHeaders.Add("User-Agent", userAgent);
             });
         }
 
