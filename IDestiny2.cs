@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using Destiny2.Config;
 using Destiny2.Responses;
-using Destiny2.User;
 
 namespace Destiny2
 {
@@ -18,5 +17,7 @@ namespace Destiny2
         Task<DestinyItemResponse> GetItem(string accessToken, BungieMembershipType type, long id, long itemInstanceId,
             params DestinyComponentType[] infos);
         Task<bool> DownloadFile(string relativePath, string destination);
+
+        string BaseUrl { get; }
     }
 }

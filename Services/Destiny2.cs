@@ -40,6 +40,8 @@ namespace Destiny2.Services
             }
         }
 
+        public string BaseUrl => _client.BaseAddress.AbsolutePath;
+
         public Task<Manifest> GetManifest()
         {
             return Get<Manifest>(string.Empty, "Destiny2/Manifest");
