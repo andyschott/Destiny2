@@ -6,12 +6,19 @@ This is a .NET Core wrapper around the [Bungie.NET API](https://bungie-net.githu
 
 In order to make use of this you will need to your application with Bungie. This is done at the [Bungie.net Application Portal](https://www.bungie.net/en/Application).
 
-Once you have registered your application, create a new instance of the `Destiny` class and start making calls:
+To inject all services into the standard dependency injection container, call `services.AddDestiny2()`. This adds the following services:
 
-    using (var destiny = new Destiny(apiKey, accessToken))
-    {
-        // Make Destiny API calls here
-    }
+- `IDestiny2`: wrapper for calling Bungie's Destiny 2 API.
+- `IManifestDownloader`: downloads the manifest database.
+- `IManifestSettings`: settings for the downloaded manifest database.
+- `IManifest`: query the manifest database.
+
+A hosted service is also setup that periodically checks for an updated manifest database. When it detects a new version, it will download it and save it to the local filesystem.
+
+To setup cookie-based OAuth, call `services.AddBungieAuthentication()`. This will add a challenge scheme named `Bungie` that will allow users to authenticate with Bungie using their account. Once authenticated, the user's membership ID can be retrieved from their `User`:
+
+        var value = User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        long.TryParse(value, out long membershipId);
 
 # Contributions
 
