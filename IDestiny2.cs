@@ -19,5 +19,6 @@ namespace Destiny2
         Task<bool> DownloadFile(string relativePath, string destination);
 
         string BaseUrl { get; }
+        bool DeserializationDebugging { get; set; }
     }
 }

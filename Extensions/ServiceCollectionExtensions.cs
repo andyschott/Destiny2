@@ -1,7 +1,9 @@
 using System;
 using Destiny2;
+using Destiny2.Helpers;
 using Destiny2.Services;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Serialization;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -13,6 +15,8 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 throw new ArgumentException("config is invalid", nameof(config));
             }
+
+            services.AddTransient<ITraceWriter, JsonLogWriter>();
 
             AddDestiny2Service(services, config.BaseUrl, config.ApiKey);
             AddManifestDownloader(services);

@@ -16,12 +16,14 @@ namespace Destiny2.Services
     {
         private readonly HttpClient _client;
         private readonly ILogger _logger;
+        private readonly ITraceWriter _jsonLogWriter;
         private JsonSerializerSettings _settings = new JsonSerializerSettings();
 
-        public Destiny2(HttpClient client, ILogger<Destiny2> logger)
+        public Destiny2(HttpClient client, ILogger<Destiny2> logger, ITraceWriter jsonLogWriter)
         {
             _client = client;
             _logger = logger;
+            _jsonLogWriter = jsonLogWriter;
         }
 
         public bool DeserializationDebugging
@@ -31,7 +33,7 @@ namespace Destiny2.Services
             {
                 if(value)
                 {
-                    _settings.TraceWriter = new MemoryTraceWriter();
+                    _settings.TraceWriter = _jsonLogWriter;
                 }
                 else
                 {
@@ -128,10 +130,6 @@ namespace Destiny2.Services
                 var json = await _client.GetStringAsync(url);
 
                 var response = JsonConvert.DeserializeObject<Response<T>>(json, _settings);
-                if(DeserializationDebugging)
-                {
-                    Console.WriteLine(_settings.TraceWriter);
-                }
 
                 if (response.ErrorCode != 1)
                 {
