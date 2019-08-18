@@ -5,7 +5,7 @@ using Destiny2.User;
 
 namespace Destiny2
 {
-    public interface IDestiny
+    public interface IDestiny2
     {
          Task<Manifest> GetManifest();
          Task<DestinyLinkedProfilesResponse> GetLinkedProfiles(string accessToken, long membershipId,

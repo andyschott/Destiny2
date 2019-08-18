@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -11,15 +10,15 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Destiny2
+namespace Destiny2.Services
 {
-    class Destiny : IDestiny
+    class Destiny2 : IDestiny2
     {
         private readonly HttpClient _client;
         private readonly ILogger _logger;
         private JsonSerializerSettings _settings = new JsonSerializerSettings();
 
-        public Destiny(HttpClient client, ILogger<Destiny> logger)
+        public Destiny2(HttpClient client, ILogger<Destiny2> logger)
         {
             _client = client;
             _logger = logger;

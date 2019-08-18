@@ -1,7 +1,8 @@
 using System;
-using Microsoft.Extensions.DependencyInjection;
+using Destiny2;
+using Destiny2.Services;
 
-namespace Destiny2.Extensions
+namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
@@ -16,7 +17,7 @@ namespace Destiny2.Extensions
                 throw new ArgumentException("Must specify an API Key", "apiKey");
             }
 
-            services.AddHttpClient<IDestiny, Destiny>(client =>
+            services.AddHttpClient<IDestiny2, Destiny2.Services.Destiny2>(client =>
             {
                 client.BaseAddress = new Uri(baseUrl);
                 client.DefaultRequestHeaders.Add("X-API-Key", apiKey);

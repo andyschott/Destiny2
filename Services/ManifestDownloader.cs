@@ -4,14 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-namespace Destiny2
+namespace Destiny2.Services
 {
     class ManifestDownloader : IManifestDownloader
     {
-        private readonly IDestiny _destiny;
+        private readonly IDestiny2 _destiny;
         private readonly ILogger _logger;
 
-        public ManifestDownloader(IDestiny destiny, ILogger<ManifestDownloader> logger)
+        public ManifestDownloader(IDestiny2 destiny, ILogger<ManifestDownloader> logger)
         {
             _destiny = destiny;
             _logger = logger;
