@@ -4,6 +4,8 @@ This is a .NET Core wrapper around the [Bungie.NET API](https://bungie-net.githu
 
 # Usage
 
+This can be added to your project via [Nuget](https://www.nuget.org/packages/Destiny2/).
+
 In order to make use of this you will need to your application with Bungie. This is done at the [Bungie.net Application Portal](https://www.bungie.net/en/Application).
 
 To inject all services into the standard dependency injection container, call `services.AddDestiny2()`. This adds the following services:
