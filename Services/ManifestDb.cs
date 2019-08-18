@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Destiny2.Definitions;
 using Newtonsoft.Json;
@@ -29,6 +31,16 @@ namespace Destiny2.Services
             return LoadObject<BucketDef, DestinyInventoryBucketDefinition>(hash);
         }
 
+        public Task<IEnumerable<DestinyItemCategoryDefinition>> LoadItemCategories(IEnumerable<uint> hashes)
+        {
+            return LoadObjects<CategoryDef, DestinyItemCategoryDefinition>(hashes);
+        }
+
+        public Task<DestinyInventoryItemDefinition> LoadPlug(uint hash)
+        {
+            return LoadObject<InventoryItemDef, DestinyInventoryItemDefinition>(hash);
+        }
+
         private async Task<TObject> LoadObject<TItemDefinition, TObject>(uint hash) where TItemDefinition : ItemDefinition, new()
         {
             var signedHash = ConvertHash(hash);
@@ -37,6 +49,26 @@ namespace Destiny2.Services
             var itemDef = await objects.Where(obj => obj.Id == signedHash).FirstOrDefaultAsync();
 
             return JsonConvert.DeserializeObject<TObject>(itemDef.Json);
+        }
+
+        private async Task<IEnumerable<TObject>> LoadObjects<TItemDefinition, TObject>(IEnumerable<uint> hashes) where TItemDefinition : ItemDefinition, new()
+        {
+            var signedHashes = ConvertHashes(hashes);
+
+            var rows = _connection.Table<TItemDefinition>();
+            var itemDefs = await rows.Where(obj => signedHashes.Contains(obj.Id)).ToListAsync();
+
+            var objects = from itemDef in itemDefs
+                          select JsonConvert.DeserializeObject<TObject>(itemDef.Json);
+            return objects.ToList();
+        }
+
+        private static ISet<int> ConvertHashes(IEnumerable<uint> hashes)
+        {
+            var convertedHashes = from hash in hashes
+                                  select ConvertHash(hash);
+
+            return new HashSet<int>(convertedHashes);
         }
 
         private static int ConvertHash(uint hash)
@@ -61,5 +93,7 @@ namespace Destiny2.Services
         class InventoryItemDef : ItemDefinition { }
         [Table("DESTINYINVENTORYBUCKETDEFINITION")]
         class BucketDef : ItemDefinition { }
+        [Table("DESTINYITEMCATEGORYDEFINITION")]
+        class CategoryDef : ItemDefinition { }
     }
 }
