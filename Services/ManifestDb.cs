@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Destiny2.Definitions;
+using Destiny2.Definitions.Sockets;
 using Newtonsoft.Json;
 using SQLite;
 
@@ -39,6 +40,16 @@ namespace Destiny2.Services
         public Task<DestinyInventoryItemDefinition> LoadPlug(uint hash)
         {
             return LoadObject<InventoryItemDef, DestinyInventoryItemDefinition>(hash);
+        }
+
+        public Task<DestinySocketTypeDefinition> LoadSocketType(uint hash)
+        {
+            return LoadObject<SocketDef, DestinySocketTypeDefinition>(hash);
+        }
+
+        public Task<DestinySocketCategoryDefinition> LoadSocketCategory(uint hash)
+        {
+            return LoadObject<SocketCategoryDef, DestinySocketCategoryDefinition>(hash);
         }
 
         private async Task<TObject> LoadObject<TItemDefinition, TObject>(uint hash) where TItemDefinition : ItemDefinition, new()
@@ -95,5 +106,9 @@ namespace Destiny2.Services
         class BucketDef : ItemDefinition { }
         [Table("DESTINYITEMCATEGORYDEFINITION")]
         class CategoryDef : ItemDefinition { }
+        [Table("DESTINYSOCKETTYPEDEFINITION")]
+        class SocketDef : ItemDefinition { }
+        [Table("DESTINYSOCKETCATEGORYDEFINITION")]
+        class SocketCategoryDef : ItemDefinition { }
     }
 }

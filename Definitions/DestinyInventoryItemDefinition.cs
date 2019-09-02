@@ -34,7 +34,7 @@ namespace Destiny2.Definitions
         // plug (DestinyItemPlugDefinition)
         // gearset
         // sack
-        // sockets (DestinyItemSocketBlockDefinitiion)
+        public DestinyItemSocketBlockDefinition Sockets { get; set; }
         // summary
         // talentGrid
         // investmentStats
