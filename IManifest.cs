@@ -14,5 +14,7 @@ namespace Destiny2
     Task<DestinyInventoryItemDefinition> LoadPlug(uint hash);
     Task<DestinySocketTypeDefinition> LoadSocketType(uint hash);
     Task<DestinySocketCategoryDefinition> LoadSocketCategory(uint hash);
+    Task<DestinyStatDefinition> LoadStat(uint hash);
+    Task<IEnumerable<DestinyStatDefinition>> LoadStats(IEnumerable<uint> hashes);
   }
 }

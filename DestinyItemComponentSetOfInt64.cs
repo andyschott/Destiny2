@@ -1,17 +1,14 @@
-using System.Collections.Generic;
 using Destiny2.Entities.Items;
-using Newtonsoft.Json;
 
 namespace Destiny2
 {
     public class DestinyItemComponentSetOfInt64
     {
-        [JsonProperty(PropertyName = "instances")]
         public DictionaryComponentResponseOfInt64<DestinyItemInstanceComponent> Instances { get; set; } = null;
         // perks
         // renderData
-        // stats
-        // sockets
+        public DictionaryComponentResponseOfInt64<DestinyItemStatsComponent> Stats { get; set; } = null;
+        public DictionaryComponentResponseOfInt64<DestinyItemSocketsComponent> Sockets { get; set; } = null;
         // talentGrids
         // plugStates
         // objectives

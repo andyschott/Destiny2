@@ -52,6 +52,16 @@ namespace Destiny2.Services
             return LoadObject<SocketCategoryDef, DestinySocketCategoryDefinition>(hash);
         }
 
+        public Task<DestinyStatDefinition> LoadStat(uint hash)
+        {
+            return LoadObject<StatDef, DestinyStatDefinition>(hash);
+        }
+
+        public Task<IEnumerable<DestinyStatDefinition>> LoadStats(IEnumerable<uint> hashes)
+        {
+            return LoadObjects<StatDef, DestinyStatDefinition>(hashes);
+        }
+
         private async Task<TObject> LoadObject<TItemDefinition, TObject>(uint hash) where TItemDefinition : ItemDefinition, new()
         {
             var signedHash = ConvertHash(hash);
@@ -110,5 +120,7 @@ namespace Destiny2.Services
         class SocketDef : ItemDefinition { }
         [Table("DESTINYSOCKETCATEGORYDEFINITION")]
         class SocketCategoryDef : ItemDefinition { }
+        [Table("DESTINYSTATDEFINITION")]
+        class StatDef : ItemDefinition { }
     }
 }
