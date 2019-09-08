@@ -52,15 +52,22 @@ namespace Destiny2.Services
 
         using(var scope = _services.CreateScope())
         {
-            var downloader = (IManifestDownloader)scope.ServiceProvider.GetRequiredService(typeof(IManifestDownloader));
-
-            var currentVersion = await GetCurrentManifestVersion(cancellationToken);
-            var updatedVersion = await downloader.DownloadManifest(_manifestSettings.DbPath.FullName, currentVersion);
-
-            if(!string.IsNullOrEmpty(updatedVersion))
+            try
             {
-                _logger.LogInformation("Downloaded an updated manifest. Updating the local verison number.");
-                Task t = UpdateCurrentManifestVersion(updatedVersion, cancellationToken);
+                var downloader = (IManifestDownloader)scope.ServiceProvider.GetRequiredService(typeof(IManifestDownloader));
+
+                var currentVersion = await GetCurrentManifestVersion(cancellationToken);
+                var updatedVersion = await downloader.DownloadManifest(_manifestSettings.DbPath.FullName, currentVersion);
+
+                if(!string.IsNullOrEmpty(updatedVersion))
+                {
+                    _logger.LogInformation("Downloaded an updated manifest. Updating the local verison number.");
+                    Task t = UpdateCurrentManifestVersion(updatedVersion, cancellationToken);
+                }
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError($"Error checking for updated manifest: {ex}");
             }
         }
     }
