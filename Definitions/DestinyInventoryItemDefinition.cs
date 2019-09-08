@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Destiny2.Definitions.Items;
 using Newtonsoft.Json;
 
 namespace Destiny2.Definitions
@@ -31,7 +32,7 @@ namespace Destiny2.Definitions
         // value
         // sourceData
         // objectives
-        // plug (DestinyItemPlugDefinition)
+        public DestinyItemPlugDefinition Plug { get; set; }
         // gearset
         // sack
         public DestinyItemSocketBlockDefinition Sockets { get; set; }
