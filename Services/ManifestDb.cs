@@ -27,6 +27,16 @@ namespace Destiny2.Services
             return LoadObject<InventoryItemDef, DestinyInventoryItemDefinition>(hash);
         }
 
+        public async Task<IEnumerable<DestinyInventoryItemDefinition>> LoadInventoryItemsWithCategory(uint categoryHash)
+        {
+            var rows = _connection.Table<InventoryItemDef>();
+            var itemDefs = await rows.ToListAsync();
+
+            var objects = itemDefs.Select(itemDef =>JsonConvert.DeserializeObject<DestinyInventoryItemDefinition>(itemDef.Json))
+                .Where(itemDef => itemDef.ItemCategoryHashes?.Contains(categoryHash) ?? false);
+            return objects.ToList();
+        }
+
         public Task<DestinyInventoryBucketDefinition> LoadBucket(uint hash)
         {
             return LoadObject<BucketDef, DestinyInventoryBucketDefinition>(hash);

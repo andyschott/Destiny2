@@ -9,6 +9,7 @@ namespace Destiny2
   {
     Task<DestinyClassDefinition> LoadClass(uint hash);
     Task<DestinyInventoryItemDefinition> LoadInventoryItem(uint hash);
+    Task<IEnumerable<DestinyInventoryItemDefinition>> LoadInventoryItemsWithCategory(uint categoryHash);
     Task<DestinyInventoryBucketDefinition> LoadBucket(uint hash);
     Task<IEnumerable<DestinyItemCategoryDefinition>> LoadItemCategories(IEnumerable<uint> hashes);
     Task<DestinyInventoryItemDefinition> LoadPlug(uint hash);
