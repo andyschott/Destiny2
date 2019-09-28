@@ -93,6 +93,31 @@ namespace Destiny2.Services
             });
         }
 
+        public Task<IEnumerable<string>> GetJson(string tableName, IEnumerable<uint> hashes)
+        {
+            return DoesTableExist(tableName).ContinueWith(existsTask =>
+            {
+                if(!existsTask.Result)
+                {
+                    return Enumerable.Empty<string>();
+                }
+
+                using(var conn = new SQLiteConnection(_dbPath))
+                {
+                    var signedHashes = ConvertHashes(hashes);
+                    var placeholders = Enumerable.Repeat("?", hashes.Count());
+
+                    var cmd = conn.CreateCommand($"select json from {tableName} where id in ({string.Join(",", placeholders)})");
+                    foreach(var hash in signedHashes)
+                    {
+                        cmd.Bind(hash);
+                    }
+                    var items = cmd.ExecuteQuery<ItemDefinition>();
+                    return items.Select(item => item.Json);
+                }
+            });
+        }
+
         private Task<bool> DoesTableExist(string tableName)
         {
             return Task.Run(() =>
@@ -144,7 +169,7 @@ namespace Destiny2.Services
             return (int)hash;
         }
 
-        abstract class ItemDefinition
+        class ItemDefinition
         {
             [PrimaryKey, Column("ID")]
             public int Id { get; set; }

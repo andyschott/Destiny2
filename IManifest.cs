@@ -18,5 +18,6 @@ namespace Destiny2
     Task<DestinyStatDefinition> LoadStat(uint hash);
     Task<IEnumerable<DestinyStatDefinition>> LoadStats(IEnumerable<uint> hashes);
     Task<string> GetJson(string tableName, uint hash);
+    Task<IEnumerable<string>> GetJson(string tableName, IEnumerable<uint> hashes);
   }
 }
