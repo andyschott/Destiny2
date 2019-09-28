@@ -17,5 +17,6 @@ namespace Destiny2
     Task<DestinySocketCategoryDefinition> LoadSocketCategory(uint hash);
     Task<DestinyStatDefinition> LoadStat(uint hash);
     Task<IEnumerable<DestinyStatDefinition>> LoadStats(IEnumerable<uint> hashes);
+    Task<string> GetJson(string tableName, uint hash);
   }
 }

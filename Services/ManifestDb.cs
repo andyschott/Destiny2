@@ -11,10 +11,12 @@ namespace Destiny2.Services
     class ManifestDb : IManifest
     {
         private readonly SQLiteAsyncConnection _connection;
+        private readonly string _dbPath;
 
         public ManifestDb(IManifestSettings manifestSettings)
         {
-            _connection = new SQLiteAsyncConnection(manifestSettings.DbPath.FullName);
+            _dbPath = manifestSettings.DbPath.FullName;
+            _connection = new SQLiteAsyncConnection(_dbPath);
         }
 
         public Task<DestinyClassDefinition> LoadClass(uint hash)
@@ -70,6 +72,20 @@ namespace Destiny2.Services
         public Task<IEnumerable<DestinyStatDefinition>> LoadStats(IEnumerable<uint> hashes)
         {
             return LoadObjects<StatDef, DestinyStatDefinition>(hashes);
+        }
+
+        public Task<string> GetJson(string tableName, uint hash)
+        {
+            return Task.Run(() =>
+            {
+                using(var conn = new SQLiteConnection(_dbPath))
+                {
+                    var signedHash = ConvertHash(hash);
+                    var cmd = conn.CreateCommand($"select json from {tableName} where id = ?",
+                        signedHash);
+                    return cmd.ExecuteScalar<string>();
+                }
+            });
         }
 
         private async Task<TObject> LoadObject<TItemDefinition, TObject>(uint hash) where TItemDefinition : ItemDefinition, new()
