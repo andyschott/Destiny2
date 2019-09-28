@@ -76,14 +76,33 @@ namespace Destiny2.Services
 
         public Task<string> GetJson(string tableName, uint hash)
         {
-            return Task.Run(() =>
+            return DoesTableExist(tableName).ContinueWith(existsTask =>
             {
+                if(!existsTask.Result)
+                {
+                    return string.Empty;
+                }
+
                 using(var conn = new SQLiteConnection(_dbPath))
                 {
                     var signedHash = ConvertHash(hash);
                     var cmd = conn.CreateCommand($"select json from {tableName} where id = ?",
                         signedHash);
                     return cmd.ExecuteScalar<string>();
+                }
+            });
+        }
+
+        private Task<bool> DoesTableExist(string tableName)
+        {
+            return Task.Run(() =>
+            {
+                using(var conn = new SQLiteConnection(_dbPath))
+                {
+                    var cmd = conn.CreateCommand("select count(name) from sqlite_master where type = 'table' and name = ? collate nocase",
+                        tableName);
+                    var count = cmd.ExecuteScalar<int>();
+                    return count > 0;
                 }
             });
         }
