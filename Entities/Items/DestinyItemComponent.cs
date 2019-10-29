@@ -19,7 +19,7 @@ namespace Destiny2.Entities.Items
         public TransferStatuses TransferStatus { get; set; }
         // lockable
         // state
-        // overrideStyleItemHash
+        public uint? OverrideStyleItemHash { get; set; }
         // expirationDate
     }
 }
