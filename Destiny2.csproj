@@ -6,21 +6,21 @@
     <PackageId>Destiny2</PackageId>
     <Version>1.4.2</Version>
     <Authors>Andy Schott</Authors>
-    <Company/>
+    <Company />
     <PackageDescription>A .NET Core wrapper around Bungie's Destiny 2 API.</PackageDescription>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>bungie;destiny2</PackageTags>
     <RepositoryUrl>https://github.com/andyschott/Destiny2</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.Net.Http" Version="4.3.4"/>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2"/>
-    <PackageReference Include="sqlite-net-pcl" Version="1.6.292"/>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0"/>
-    <PackageReference Include="Microsoft.Extensions.Http" Version="2.2.0"/>
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.2.0"/>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0"/>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="2.2.0"/>
-    <PackageReference Include="IdentityModel" Version="3.10.10"/>
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.6.292" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="2.2.0" />
+    <PackageReference Include="IdentityModel" Version="4.1.0" />
   </ItemGroup>
 </Project>
