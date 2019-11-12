@@ -54,7 +54,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     OnCreatingTicket = context =>
                     {
-                        context.RunClaimActions(context.TokenResponse.Response);
+                        context.RunClaimActions(context.TokenResponse.Response.RootElement);
                         return Task.CompletedTask;
                     },
                     OnRemoteFailure = context =>
