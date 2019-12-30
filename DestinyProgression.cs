@@ -17,6 +17,6 @@ namespace Destiny2
         public int NextLevelAt { get; set; }
         public int? CurrentResetCount { get; set; }
         public IEnumerable<DestinyProgressionResetEntry> SeasonResets { get; set; }
-        public IEnumerable<int> RewardItemStates { get; set; }
+        public IEnumerable<DestinyProgressionRewardItemState> RewardItemStates { get; set; }
     }
 }

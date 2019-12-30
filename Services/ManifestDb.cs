@@ -129,6 +129,11 @@ namespace Destiny2.Services
             return LoadObject<SeasonPassDef, DestinySeasonPassDefinition>(hash);
         }
 
+        public Task<DestinyProgressionDefinition> LoadProgression(uint hash)
+        {
+            return LoadObject<ProgressionDef, DestinyProgressionDefinition>(hash);
+        }
+
         private Task<bool> DoesTableExist(string tableName)
         {
             return Task.Run(() =>
@@ -207,5 +212,7 @@ namespace Destiny2.Services
         class SeasonDef : ItemDefinition { }
         [Table("DESTINYSEASONPASSDEFINITION")]
         class SeasonPassDef : ItemDefinition { }
+        [Table("DESTINYPROGRESSIONDEFINITION")]
+        class ProgressionDef : ItemDefinition { }
     }
 }
