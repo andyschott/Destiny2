@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Destiny2.Definitions;
+using Destiny2.Definitions.Seasons;
 using Destiny2.Definitions.Sockets;
 
 namespace Destiny2
@@ -19,5 +20,7 @@ namespace Destiny2
     Task<IEnumerable<DestinyStatDefinition>> LoadStats(IEnumerable<uint> hashes);
     Task<string> GetJson(string tableName, uint hash);
     Task<IEnumerable<string>> GetJson(string tableName, IEnumerable<uint> hashes);
+    Task<DestinySeasonDefinition> LoadSeason(uint hash);
+    Task<DestinySeasonPassDefinition> LoadSeasonPass(uint hash);
   }
 }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Destiny2.Definitions;
+using Destiny2.Definitions.Seasons;
 using Destiny2.Definitions.Sockets;
 using Newtonsoft.Json;
 using SQLite;
@@ -118,6 +119,16 @@ namespace Destiny2.Services
             });
         }
 
+        public Task<DestinySeasonDefinition> LoadSeason(uint hash)
+        {
+            return LoadObject<SeasonDef, DestinySeasonDefinition>(hash);
+        }
+
+        public Task<DestinySeasonPassDefinition> LoadSeasonPass(uint hash)
+        {
+            return LoadObject<SeasonPassDef, DestinySeasonPassDefinition>(hash);
+        }
+
         private Task<bool> DoesTableExist(string tableName)
         {
             return Task.Run(() =>
@@ -192,5 +203,9 @@ namespace Destiny2.Services
         class SocketCategoryDef : ItemDefinition { }
         [Table("DESTINYSTATDEFINITION")]
         class StatDef : ItemDefinition { }
+        [Table("DESTINYSEASONDEFINITION")]
+        class SeasonDef : ItemDefinition { }
+        [Table("DESTINYSEASONPASSDEFINITION")]
+        class SeasonPassDef : ItemDefinition { }
     }
 }
