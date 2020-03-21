@@ -80,6 +80,14 @@ namespace Destiny2.Services
             return Get<DestinyItemResponse>(accessToken, $"Destiny2/{(int)type}/Profile/{id}/Item/{itemInstanceId}/", query);
         }
 
+        public Task<DestinyVendorResponse> GetVendorResponse(string accessToken, BungieMembershipType type, long membershipId,
+            long characterId, uint vendorHash, params DestinyComponentType[] infos)
+        {
+            var query = ConvertComponents(infos);
+            return Get<DestinyVendorResponse>(accessToken, $"Destiny2/{(int)type}/Profile/{membershipId}/Character/{characterId}/Vendors/{vendorHash}",
+                query);
+        }
+
         public async Task<bool> DownloadFile(string relativePath, string destination)
         {
             try

@@ -16,6 +16,8 @@ namespace Destiny2
             long characterId, params DestinyComponentType[] infos);
         Task<DestinyItemResponse> GetItem(string accessToken, BungieMembershipType type, long id, long itemInstanceId,
             params DestinyComponentType[] infos);
+        Task<DestinyVendorResponse> GetVendorResponse(string accessToken, BungieMembershipType type, long membershipId,
+            long characterId, uint vendorHash, params DestinyComponentType[] infos);
         Task<bool> DownloadFile(string relativePath, string destination);
 
         string BaseUrl { get; }
