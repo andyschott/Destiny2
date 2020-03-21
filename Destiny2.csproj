@@ -4,7 +4,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>Destiny2</PackageId>
-    <Version>1.6</Version>
+    <Version>1.7.0</Version>
     <Authors>Andy Schott</Authors>
     <Company />
     <PackageDescription>A .NET Core wrapper around Bungie's Destiny 2 API.</PackageDescription>
