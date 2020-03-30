@@ -28,6 +28,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 options.DefaultChallengeScheme = "Bungie";
             })
             .AddCookie(options => {
+                options.Cookie.SameSite = SameSiteMode.None;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 options.Cookie.Name = config.LoginCookieName;
                 options.Events = new CookieAuthenticationEvents
                 {
