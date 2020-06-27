@@ -139,6 +139,16 @@ namespace Destiny2.Services
             return LoadObject<DestinyVendorDef, DestinyVendorDefinition>(hash);
         }
 
+        public Task<DestinySandboxPerkDefinition> LoadSandboxPerk(uint hash)
+        {
+            return LoadObject<DestinySandboxPerkDef, DestinySandboxPerkDefinition>(hash);
+        }
+
+        public Task<DestinyDamageTypeDefinition> LoadDamageType(uint hash)
+        {
+            return LoadObject<DestinyDamageTypeDef, DestinyDamageTypeDefinition>(hash);
+        }
+
         private Task<bool> DoesTableExist(string tableName)
         {
             return Task.Run(() =>
@@ -221,5 +231,9 @@ namespace Destiny2.Services
         class ProgressionDef : ItemDefinition { }
         [Table("DESTINYVENDORDEFINITION")]
         class DestinyVendorDef : ItemDefinition {}
+        [Table("DESTINYSANDBOXPERKDEFINITION")]
+        class DestinySandboxPerkDef : ItemDefinition {}
+        [Table("DESTINYDAMAGETYPEDEFINITION")]
+        class DestinyDamageTypeDef : ItemDefinition {}
     }
 }

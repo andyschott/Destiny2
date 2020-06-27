@@ -24,5 +24,7 @@ namespace Destiny2
     Task<DestinySeasonPassDefinition> LoadSeasonPass(uint hash);
     Task<DestinyProgressionDefinition> LoadProgression(uint hash);
     Task<DestinyVendorDefinition> LoadVendor(uint hash);
+    Task<DestinySandboxPerkDefinition> LoadSandboxPerk(uint hash);
+    Task<DestinyDamageTypeDefinition> LoadDamageType(uint hash);
   }
 }

@@ -12,17 +12,14 @@ namespace Destiny2.Definitions
         // secondarySpecial
         // backgroundColor
         // screenshot
-        [JsonProperty(PropertyName = "itemTypeDisplayName")]
         public string ItemTypeDisplayName { get; set; }
         // uiItemDisplayStyle
         // itemTypeAndTierDisplayName
         // displaySource
         // tooltipStyle
         // action
-        [JsonProperty(PropertyName = "inventory")]
         public DestinyItemInventoryBlockDefinition Inventory { get; set; } = null;
         // setData
-        [JsonProperty(PropertyName = "stats")]
         public DestinyItemStatBlockDefinition Stats { get; set; }
         // emblemObjectiveHash
         // equippingBlock
@@ -39,23 +36,19 @@ namespace Destiny2.Definitions
         // summary
         // talentGrid
         // investmentStats
-        // perks
+        public IEnumerable<DestinyItemPerkEntryDefinition> Perks { get; set; }
         // loreHash
         // summaryItemHash
         // animations
         // allowActions
         // links
         // doesPostmasterPullHaveSideEffects
-        [JsonProperty(PropertyName = "nonTransferrable")]
         public bool NonTransferrable { get; set; }
-        [JsonProperty(PropertyName = "itemCategoryHashes")]
         public  IEnumerable<uint> ItemCategoryHashes { get; set; }
         // specialItemType
         // itemType
         // itemSubType
-        [JsonProperty(PropertyName = "classType")]
         public DestinyClass ClassType { get; set; }
-        [JsonProperty(PropertyName = "equippable")]
         public bool Equippable { get; set; }
         // damageTypeHashes
         // damageTypes
