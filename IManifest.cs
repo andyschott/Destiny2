@@ -25,6 +25,7 @@ namespace Destiny2
     Task<DestinyProgressionDefinition> LoadProgression(uint hash);
     Task<DestinyVendorDefinition> LoadVendor(uint hash);
     Task<DestinySandboxPerkDefinition> LoadSandboxPerk(uint hash);
+    Task<IEnumerable<DestinySandboxPerkDefinition>> LoadSandboxPerks(IEnumerable<uint> hashes);
     Task<DestinyDamageTypeDefinition> LoadDamageType(uint hash);
   }
 }

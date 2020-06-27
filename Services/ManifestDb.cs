@@ -144,6 +144,11 @@ namespace Destiny2.Services
             return LoadObject<DestinySandboxPerkDef, DestinySandboxPerkDefinition>(hash);
         }
 
+        public Task<IEnumerable<DestinySandboxPerkDefinition>> LoadSandboxPerks(IEnumerable<uint> hashes)
+        {
+            return LoadObjects<DestinySandboxPerkDef, DestinySandboxPerkDefinition>(hashes);
+        }
+
         public Task<DestinyDamageTypeDefinition> LoadDamageType(uint hash)
         {
             return LoadObject<DestinyDamageTypeDef, DestinyDamageTypeDefinition>(hash);
