@@ -154,6 +154,11 @@ namespace Destiny2.Services
             return LoadObject<DestinyDamageTypeDef, DestinyDamageTypeDefinition>(hash);
         }
 
+        public Task<DestinyStatDefinition> LoadStatType(uint hash)
+        {
+            return LoadObject<DestinyStatDef, DestinyStatDefinition>(hash);
+        }
+
         private Task<bool> DoesTableExist(string tableName)
         {
             return Task.Run(() =>
@@ -240,5 +245,7 @@ namespace Destiny2.Services
         class DestinySandboxPerkDef : ItemDefinition {}
         [Table("DESTINYDAMAGETYPEDEFINITION")]
         class DestinyDamageTypeDef : ItemDefinition {}
+        [Table("DESTINYSTATDEFINITION")]
+        class DestinyStatDef : ItemDefinition {}
     }
 }

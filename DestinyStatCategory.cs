@@ -5,6 +5,6 @@ namespace Destiny2
         Gameplay = 0,
         Weapon = 1,
         Defense = 2,
-        Primary = 3,
+        Primary = 3
     }
 }

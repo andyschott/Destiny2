@@ -35,7 +35,7 @@ namespace Destiny2.Definitions
         public DestinyItemSocketBlockDefinition Sockets { get; set; }
         // summary
         // talentGrid
-        // investmentStats
+        public IEnumerable<DestinyItemInvestmentStatDefinition> InvestmentStats { get; set; }
         public IEnumerable<DestinyItemPerkEntryDefinition> Perks { get; set; }
         // loreHash
         // summaryItemHash
