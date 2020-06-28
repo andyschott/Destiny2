@@ -1,3 +1,4 @@
+using Destiny2.Components.Collectibles;
 using Destiny2.Components.Profiles;
 using Destiny2.Entities;
 using Destiny2.Entities.Characters;
@@ -15,5 +16,6 @@ namespace Destiny2.Responses
         public DestinyItemComponentSetOfInt64 ItemComponents { get; set; } = null;
         public SingleComponentResponse<DestinyInventoryComponent> ProfileCurrencies { get; set; }
         public SingleComponentResponse<DestinyProfileProgressionComponent> ProfileProgression { get; set; }
+        public SingleComponentResponse<DestinyProfileCollectiblesComponent> ProfileCollectibles { get; set; }
     }
 }

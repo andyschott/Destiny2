@@ -6,7 +6,7 @@ namespace Destiny2.Definitions
 {
     public class DestinyInventoryItemDefinition : AbstractDefinition
     {
-        // collectibleHash
+        public uint? CollectibleHash { get; set; }
         // secondaryIcon
         // secondaryOverlay
         // secondarySpecial
