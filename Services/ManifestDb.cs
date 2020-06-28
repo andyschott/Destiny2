@@ -40,6 +40,11 @@ namespace Destiny2.Services
             return objects.ToList();
         }
 
+        public Task<IEnumerable<DestinyInventoryItemDefinition>> LoadInventoryItems(IEnumerable<uint> hashes)
+        {
+            return LoadObjects<InventoryItemDef, DestinyInventoryItemDefinition>(hashes);
+        }
+
         public Task<DestinyInventoryBucketDefinition> LoadBucket(uint hash)
         {
             return LoadObject<BucketDef, DestinyInventoryBucketDefinition>(hash);
