@@ -28,5 +28,6 @@ namespace Destiny2
     Task<IEnumerable<DestinySandboxPerkDefinition>> LoadSandboxPerks(IEnumerable<uint> hashes);
     Task<DestinyDamageTypeDefinition> LoadDamageType(uint hash);
     Task<DestinyStatDefinition> LoadStatType(uint hash);
+    Task<IEnumerable<DestinyStatDefinition>> LoadStatTypes(IEnumerable<uint> hashes);
   }
 }

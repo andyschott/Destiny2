@@ -159,6 +159,11 @@ namespace Destiny2.Services
             return LoadObject<DestinyStatDef, DestinyStatDefinition>(hash);
         }
 
+        public Task<IEnumerable<DestinyStatDefinition>> LoadStatTypes(IEnumerable<uint> hashes)
+        {
+            return LoadObjects<DestinyStatDef, DestinyStatDefinition>(hashes);
+        }
+
         private Task<bool> DoesTableExist(string tableName)
         {
             return Task.Run(() =>
