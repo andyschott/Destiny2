@@ -50,6 +50,11 @@ namespace Destiny2.Services
             return LoadObject<BucketDef, DestinyInventoryBucketDefinition>(hash);
         }
 
+        public Task<IEnumerable<DestinyInventoryBucketDefinition>> LoadBuckets(IEnumerable<uint> hashes)
+        {
+            return LoadObjects<BucketDef, DestinyInventoryBucketDefinition>(hashes);
+        }
+
         public Task<IEnumerable<DestinyItemCategoryDefinition>> LoadItemCategories(IEnumerable<uint> hashes)
         {
             return LoadObjects<CategoryDef, DestinyItemCategoryDefinition>(hashes);

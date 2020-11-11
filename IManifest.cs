@@ -13,6 +13,7 @@ namespace Destiny2
     Task<IEnumerable<DestinyInventoryItemDefinition>> LoadInventoryItemsWithCategory(uint categoryHash);
     Task<IEnumerable<DestinyInventoryItemDefinition>> LoadInventoryItems(IEnumerable<uint> hashes);
     Task<DestinyInventoryBucketDefinition> LoadBucket(uint hash);
+    Task<IEnumerable<DestinyInventoryBucketDefinition>> LoadBuckets(IEnumerable<uint> hashes);
     Task<IEnumerable<DestinyItemCategoryDefinition>> LoadItemCategories(IEnumerable<uint> hashes);
     Task<DestinyInventoryItemDefinition> LoadPlug(uint hash);
     Task<DestinySocketTypeDefinition> LoadSocketType(uint hash);
