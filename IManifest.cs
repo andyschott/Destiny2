@@ -23,6 +23,7 @@ namespace Destiny2
     Task<string> GetJson(string tableName, uint hash);
     Task<IEnumerable<string>> GetJson(string tableName, IEnumerable<uint> hashes);
     Task<DestinySeasonDefinition> LoadSeason(uint hash);
+    Task<DestinySeasonDefinition> LoadSeasonByNumber(int seasonNumber);
     Task<DestinySeasonPassDefinition> LoadSeasonPass(uint hash);
     Task<DestinyProgressionDefinition> LoadProgression(uint hash);
     Task<DestinyVendorDefinition> LoadVendor(uint hash);

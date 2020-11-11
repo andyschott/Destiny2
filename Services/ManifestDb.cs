@@ -134,6 +134,12 @@ namespace Destiny2.Services
             return LoadObject<SeasonDef, DestinySeasonDefinition>(hash);
         }
 
+        public async Task<DestinySeasonDefinition> LoadSeasonByNumber(int seasonNumber)
+        {
+            var seasons = await LoadObjects<SeasonDef, DestinySeasonDefinition>();
+            return seasons.FirstOrDefault(season => season.SeasonNumber == seasonNumber);
+        }
+
         public Task<DestinySeasonPassDefinition> LoadSeasonPass(uint hash)
         {
             return LoadObject<SeasonPassDef, DestinySeasonPassDefinition>(hash);
@@ -204,6 +210,16 @@ namespace Destiny2.Services
 
             var rows = _connection.Table<TItemDefinition>();
             var itemDefs = await rows.Where(obj => signedHashes.Contains(obj.Id)).ToListAsync();
+
+            var objects = from itemDef in itemDefs
+                          select JsonConvert.DeserializeObject<TObject>(itemDef.Json);
+            return objects.ToList();
+        }
+
+        private async Task<IEnumerable<TObject>> LoadObjects<TItemDefinition, TObject>()  where TItemDefinition : ItemDefinition, new()
+        {
+            var rows = _connection.Table<TItemDefinition>();
+            var itemDefs = await rows.ToListAsync();
 
             var objects = from itemDef in itemDefs
                           select JsonConvert.DeserializeObject<TObject>(itemDef.Json);
