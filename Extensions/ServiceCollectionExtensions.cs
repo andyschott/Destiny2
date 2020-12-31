@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http;
 using Destiny2;
 using Destiny2.Helpers;
 using Destiny2.Services;
@@ -41,7 +42,15 @@ namespace Microsoft.Extensions.DependencyInjection
                 client.BaseAddress = new Uri(baseUrl);
                 client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
                 client.DefaultRequestHeaders.Add("User-Agent", userAgent);
+            }).ConfigurePrimaryHttpMessageHandler(() =>
+            {
+                return new HttpClientHandler
+                {
+                    UseCookies = false
+                };
             });
+
+            services.AddScoped<BungieCookies>();
         }
 
         private static void AddManifestDownloader(IServiceCollection services)

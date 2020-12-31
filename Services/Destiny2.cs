@@ -15,13 +15,16 @@ namespace Destiny2.Services
     class Destiny2 : IDestiny2
     {
         private readonly HttpClient _client;
+        private readonly BungieCookies _affinitization;
         private readonly ILogger _logger;
         private readonly ITraceWriter _jsonLogWriter;
         private JsonSerializerSettings _settings = new JsonSerializerSettings();
 
-        public Destiny2(HttpClient client, ILogger<Destiny2> logger, ITraceWriter jsonLogWriter)
+        public Destiny2(HttpClient client, BungieCookies affinitization,
+            ILogger<Destiny2> logger, ITraceWriter jsonLogWriter)
         {
             _client = client;
+            _affinitization = affinitization;
             _logger = logger;
             _jsonLogWriter = jsonLogWriter;
         }
@@ -124,28 +127,47 @@ namespace Destiny2.Services
 
         private async Task<T> Get<T>(string accessToken, string method, params (string name, string value)[] queryItems)
         {
-            if(!string.IsNullOrEmpty(accessToken))
-            {
-                _client.DefaultRequestHeaders.Remove("Authorization");
-                _client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
-            }
-        
             try
             {
                 var url = BuildUrl(method, queryItems);
                 _logger.LogInformation($"Calling {url}");
 
-                var json = await _client.GetStringAsync(url);
-
-                var response = JsonConvert.DeserializeObject<Response<T>>(json, _settings);
-
-                if (response.ErrorCode != 1)
+                var request = new HttpRequestMessage
                 {
-                    _logger.LogWarning($"Error Code: {response.ErrorCode}; Error Status: {response.ErrorStatus}");
+                    Method = HttpMethod.Get,
+                    RequestUri = url,
+                };
+                if(!string.IsNullOrEmpty(accessToken))
+                {
+                    request.Headers.Add("Authorization", $"Bearer {accessToken}");
+                }
+
+                if(_affinitization.Cookies.Any())
+                {
+                    var requestCookies = _affinitization.Cookies.Select(cookie =>
+                    {
+                        return $"{cookie.name}={cookie.value}";
+                    });
+                    request.Headers.Add("Cookie", string.Join(';', requestCookies));
+                }
+
+                var response = await _client.SendAsync(request);
+
+                if(response.Headers.TryGetValues("set-cookie", out var responseCookies))
+                {
+                    _affinitization.SetCookies(responseCookies);
+                };
+
+                var json = await response.Content.ReadAsStringAsync();
+                var responseObject = JsonConvert.DeserializeObject<Response<T>>(json, _settings);
+
+                if (responseObject.ErrorCode != 1)
+                {
+                    _logger.LogWarning($"Error Code: {responseObject.ErrorCode}; Error Status: {responseObject.ErrorStatus}");
                     return default(T);
                 }
 
-                return response.Data;
+                return responseObject.Data;
             }
             catch (HttpRequestException ex)
             {
