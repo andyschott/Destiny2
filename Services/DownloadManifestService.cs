@@ -74,6 +74,7 @@ namespace Destiny2.Services
 
     private async Task<string> GetCurrentManifestVersion(CancellationToken cancellationToken)
     {
+        _manifestSettings.VersionPath.Refresh();
         if (!_manifestSettings.VersionPath.Exists)
         {
             _logger?.LogInformation("VersionPath doesn't exist. Returning an empty string.");
