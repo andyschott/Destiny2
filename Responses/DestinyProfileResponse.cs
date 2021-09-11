@@ -17,5 +17,6 @@ namespace Destiny2.Responses
         public SingleComponentResponse<DestinyInventoryComponent> ProfileCurrencies { get; set; }
         public SingleComponentResponse<DestinyProfileProgressionComponent> ProfileProgression { get; set; }
         public SingleComponentResponse<DestinyProfileCollectiblesComponent> ProfileCollectibles { get; set; }
+        public DictionaryComponentResponseOfInt64<DestinyCharacterActivitiesComponent> CharacterActivities { get; set; }
     }
 }

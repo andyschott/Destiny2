@@ -32,5 +32,7 @@ namespace Destiny2
     Task<DestinyDamageTypeDefinition> LoadDamageType(uint hash);
     Task<DestinyStatDefinition> LoadStatType(uint hash);
     Task<IEnumerable<DestinyStatDefinition>> LoadStatTypes(IEnumerable<uint> hashes);
+    Task<DestinyActivityDefinition> LoadActivity(uint hash);
+    Task<IEnumerable<DestinyActivityDefinition>> LoadActivities(IEnumerable<uint> hashes);
   }
 }

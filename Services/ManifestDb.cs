@@ -180,6 +180,16 @@ namespace Destiny2.Services
             return LoadObjects<DestinyStatDef, DestinyStatDefinition>(hashes);
         }
 
+        public Task<DestinyActivityDefinition> LoadActivity(uint hash)
+        {
+            return LoadObject<DestinyActivityDef, DestinyActivityDefinition>(hash);
+        }
+
+        public Task<IEnumerable<DestinyActivityDefinition>> LoadActivities(IEnumerable<uint> hashes)
+        {
+            return LoadObjects<DestinyActivityDef, DestinyActivityDefinition>(hashes);
+        }
+
         private Task<bool> DoesTableExist(string tableName)
         {
             return Task.Run(() =>
@@ -278,5 +288,7 @@ namespace Destiny2.Services
         class DestinyDamageTypeDef : ItemDefinition {}
         [Table("DESTINYSTATDEFINITION")]
         class DestinyStatDef : ItemDefinition {}
+        [Table("DESTINYACTIVITYDEFINITION")]
+        class DestinyActivityDef : ItemDefinition {}
     }
 }
